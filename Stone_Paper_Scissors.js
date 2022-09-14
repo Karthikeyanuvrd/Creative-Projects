@@ -9,6 +9,8 @@ const startButton = document.getElementById("start");
 let gameStatus;
 let computerPoints =0;
 let userPoints=0;
+const finishedResult = document.getElementById('finished');
+const tryAgain = document.getElementById('try-again');
 startButton.addEventListener('click', (e)=>{
     
     document.getElementById("stone").disabled = false;
@@ -23,7 +25,6 @@ count ++;
 userChoice = e.target.value;
 userChoiceDisplay.value = userChoice;
 computerChoose();
-console.log(count);
 
 if(count > noOfTries){
     document.getElementById("stone").disabled = true;
@@ -68,31 +69,27 @@ if(gameStatus == "You loose"){
 if(gameStatus == "You win"){
     userPoints++;
 }
-console.log(computerPoints,userPoints);
 let gamePointsHeadings = "<tr><th>Computer Points</th><th>User Points</th><th>No of tries</th><th>Actions</th><th>Current result</th></tr>";
- let gamePoints = "<tr><td>"+computerPoints+"</td><td>"+userPoints+"</td><td>"+noOfTries+"</td><td><button id='increase-try' class='increase-try'>Increase Tries</button><button id='finish'>Finish</button></td><td>"+gameStatus+"</td></tr>";
+ let gamePoints = "<tr><td>"+computerPoints+"</td><td>"+userPoints+"</td><td>"+noOfTries+"</td><td><button id='increase-try' class='increase-try'>Increase Tries</button><button id='finish' class='finish'>Finish</button></td><td>"+gameStatus+"</td></tr>";
  document.getElementById("thead").innerHTML = gamePointsHeadings;
- document.getElementById("tbody").innerHTML = gamePoints;
+ document.getElementById("tbody").innerHTML += gamePoints;
  
-const increase_Try = document.getElementById("increase-try");
-increase_Try.addEventListener('click',() => {
-    console.log("Hai from increase");
+const increase_Try = document.querySelectorAll(".increase-try");
+increase_Try.forEach(increase => increase.addEventListener('click',() => {
     noOfTries ++;
     let gamePointsHeadings = "<tr><th>Computer Points</th><th>User Points</th><th>No of tries</th><th>Actions</th><th>Current result</th></tr>";
-    let gamePoints = "<tr><td>"+computerPoints+"</td><td>"+userPoints+"</td><td>"+noOfTries+"</td><td><button id='increase-try'>Increase Tries</button><button id='finish'>Finish</button></td><td>"+gameStatus+"</td></tr>";
+    let gamePoints = "<tr><td>"+computerPoints+"</td><td>"+userPoints+"</td><td>"+noOfTries+"</td><td><button class='increase-try'>Increase Tries</button><button class='finish' id='finish'>Finish</button></td><td>"+gameStatus+"</td></tr>";
  document.getElementById("thead").innerHTML = gamePointsHeadings;
- document.getElementById("tbody").innerHTML = gamePoints; 
+ document.getElementById("tbody").innerHTML += gamePoints; 
 
  document.getElementById("stone").disabled = false;
  document.getElementById("paper").disabled = false;
  document.getElementById("scissor").disabled = false;
-    console.log(noOfTries);
-});
+}));
 
-const finishGame = document.getElementById('finish');
-const finishedResult = document.getElementById('finished');
-finishGame.addEventListener('click', () => {
-    console.log("hai");
+let finishGame = document.querySelectorAll('.finish');
+finishGame.forEach(finish => finish.addEventListener('click', () => {
+    
     if(computerPoints == userPoints){
      finishedResult.value = "Match Draw";
     }
@@ -103,7 +100,8 @@ finishGame.addEventListener('click', () => {
         finishedResult.value = "You Win the Game";
     }
     finishedResult.style.display = "block";
-})
+    tryAgain.style.display = "block";
+}));
 
 //  const print = document.getElementById("print");
 //  print.addEventListener('click', () => {
@@ -117,11 +115,26 @@ finishGame.addEventListener('click', () => {
     // console.log(document.body.innerHTML);
  //})
 }
-console.log(document.getElementById("tbody").children[0]);
+tryAgain.addEventListener('click',() => {
+ document.getElementById("stone").disabled = false;
+ document.getElementById("paper").disabled = false;
+ document.getElementById("scissor").disabled = false;
+ computerPoints = 0;
+ userPoints = 0;
+ count = 0;
+computerChoiceDisplay.value = "";
+userChoiceDisplay.value = "";
+finishedResult.style.display = "none";
+    tryAgain.style.display = "none";
+
+ let gamePointsHeadings = "<tr><th>Computer Points</th><th>User Points</th><th>No of tries</th><th>Actions</th><th>Current result</th></tr>";
+    let gamePoints = "<tr><td>"+computerPoints+"</td><td>"+userPoints+"</td><td>"+noOfTries+"</td><td><button class='increase-try'>Increase Tries</button><button class='finish'>Finish</button></td><td>"+gameStatus+"</td></tr>";
+ document.getElementById("thead").innerHTML = gamePointsHeadings;
+ document.getElementById("tbody").innerHTML = gamePoints; 
+})
 if(document.getElementById("tbody").children[0] != undefined){
     const increase_Try = document.getElementsByClassName("increase-try");
 increase_Try.forEach(increase =>increase.addEventListener('click',() => {
-    console.log("hai");
     noOfTries ++;
     let gamePointsHeadings = "<tr><th>Computer Points</th><th>User Points</th><th>No of tries</th><th>Actions</th><th>Result</th></tr>";
     let gamePoints = "<tr><td>"+computerPoints+"</td><td>"+userPoints+"</td><td>"+noOfTries+"</td><td><button id='increase-try'>Increase Tries</button></td><td>"+gameStatus+"</td></tr>";
@@ -129,5 +142,3 @@ increase_Try.forEach(increase =>increase.addEventListener('click',() => {
  document.getElementById("tbody").innerHTML = gamePoints; 
 }));
 }
-
-console.log(userChoiceButtons)
